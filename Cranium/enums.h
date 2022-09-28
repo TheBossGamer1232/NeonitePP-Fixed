@@ -646,16 +646,17 @@ enum ELifetimeCondition
 	COND_Max = 16,
 };
 
-enum class EFortCustomPartType : uint8_t
+enum EFortCustomPartType : uint8_t
 {
 	Head = 0,
 	Body = 1,
 	Hat = 2,
 	Backpack = 3,
-	Charm = 4,
+	MiscOrTail = 4,
 	Face = 5,
-	NumTypes = 6,
-	EFortCustomPartType_MAX = 7
+	Gameplay = 6,
+	NumTypes = 7,
+	EFortCustomPartType_MAX = 8
 };
 
 enum class EFortCustomGender : uint8_t

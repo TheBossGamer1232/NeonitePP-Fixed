@@ -205,6 +205,33 @@ namespace UFunctions
 		printf(XOR("[NeoRoyale] HLODSM Actor was destroyed."));
 	}
 
+	inline void DestroyAllTODM()
+	{
+		ObjectFinder EngineFinder = ObjectFinder::EntryPoint(uintptr_t(GEngine));
+		ObjectFinder LocalPlayer = EngineFinder.Find(XOR(L"GameInstance")).Find(XOR(L"LocalPlayers"));
+
+		ObjectFinder PlayerControllerFinder = LocalPlayer.Find(XOR(L"PlayerController"));
+
+		ObjectFinder CheatManagerFinder = PlayerControllerFinder.Find(XOR(L"CheatManager"));
+
+		UFunction* fn;
+		if (gVersion > 16.00f)
+		{
+			fn = FindObject<UFunction*>(XOR(L"Function /Script/Engine.CheatManager.DestroyAll"));
+		}
+		else
+		{
+			fn = FindObject<UFunction*>(XOR(L"Function /Script/Engine.CheatManager:DestroyAll"));
+
+		}
+		auto TODMActor = FindObject<UClass*>(XOR(L"Class /Script/FortniteGame.FortTimeOfDayManager"));
+
+		UCheatManager_DestroyAll_Params params;
+		params.Class = TODMActor;
+
+		ProcessEvent(CheatManagerFinder.GetObj(), fn, &params);
+	}
+
 	//travel to a url
 	inline void Travel(const wchar_t* url)
 	{
@@ -568,6 +595,37 @@ namespace UFunctions
 		params.SpecificPlayer = PlayerControllerFinder.GetObj();
 
 		ProcessEvent(KismetSysLib, fn, &params);
+	}
+
+	static UObject* LoadLevelInstance(FString Level, FVector Loc, FRotator Rot = FRotator{ 0.0f,0.0f,0.0f })
+	{
+		auto statics = FindObject<UObject*>(XOR(L"LevelStreamingDynamic /Script/Engine.Default__LevelStreamingDynamic"));
+		auto fn = FindObject<UFunction*>(XOR(L"Function /Script/Engine.LevelStreamingDynamic.LoadLevelInstance"));
+		ObjectFinder EngineFinder = ObjectFinder::EntryPoint(uintptr_t(GEngine));
+		ObjectFinder GameViewPortClientFinder = EngineFinder.Find(XOR(L"GameViewport"));
+		ObjectFinder WorldFinder = GameViewPortClientFinder.Find(XOR(L"World"));
+
+		struct
+		{
+			UObject* WorldContextObject;
+			FString LevelName;
+			FVector Location;
+			FRotator Rotation;
+			bool bOutSuccess;
+			FString OptionalLevelNameOverride;
+			UObject* OptionalLevelStreamingClass;
+			UObject* ReturnValue;
+		}params;
+
+		params.WorldContextObject = WorldFinder.GetObj();
+		params.LevelName = Level;
+		params.Location = Loc;
+		params.Rotation = Rot;
+		params.bOutSuccess = true;
+
+		ProcessEvent(statics, fn, &params);
+
+		return params.ReturnValue;
 	}
 
 	inline void Play(const wchar_t* AnimationPlayerFullName)

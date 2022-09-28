@@ -32,13 +32,13 @@ inline void* ProcessEventDetour(UObject* pObj, UObject* pFunc, void* pParams)
 	if (GetAsyncKeyState(VK_F1) & 0x1) {
 		auto MAP = ARTEMIS_TERRAIN;
 		if (gVersion < 19.0f) {
-			MAP = APOLLO_TERRAIN;
+			MAP = KIWI_PERSISTENT;
 		}
 		else if (gVersion < 11.0f) {
 			//TODO
 		}
 		Start(MAP);
-		gPlaylist = FindObject<UObject*>(XOR(L"FortPlaylistAthena /Game/Athena/Playlists/BattleLab/Playlist_BattleLab.Playlist_BattleLab"));
+		gPlaylist = FindObject<UObject*>(XOR(L"FortPlaylistAthena /KiwiPlaylist/Playlists/Playlist_Kiwi.Playlist_Kiwi"));
 		Sleep(1000);
 	}
 
@@ -511,6 +511,18 @@ inline void* ProcessEventDetour(UObject* pObj, UObject* pFunc, void* pParams)
 				}
 				else if (gVersion == 17.50f)
 				{
+					/* This doesn't work on cranium for some reason.
+					NeoPlayer.AddComponentToController(FindObject<UObject*>(XOR(L"BlueprintGeneratedClass /KiwiPlaylist/Gameplay/Kiwi_ControllerComponent.Kiwi_ControllerComponent_C")));
+					NeoPlayer.AddComponentToController(FindObject<UObject*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/BP_Kiwi_Prison_ControllerComponent.BP_Kiwi_Prison_ControllerComponent_C")));
+					NeoPlayer.AddComponentToController(FindObject<UObject*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/BP_Kiwi_PhaseSpecificControllerComponent.BP_Kiwi_PhaseSpecificControllerComponent_C")));
+					NeoPlayer.AddComponentToController(FindObject<UObject*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/Hangar/BP_Kiwi_Hangar_ControllerComponent.BP_Kiwi_Hangar_ControllerComponent_C")));
+					*/
+
+					CreateThread(0, 0, StartKiwiThread, 0, 0, 0);
+					//NeoPlayer.GiveKiwiBackpack();
+					UObject** AbilitySystemComponent = reinterpret_cast<UObject**>(__int64(NeoPlayer.Pawn) + __int64(ObjectFinder::FindOffset(L"FortPawn", L"AbilitySystemComponent")));
+					NeoPlayer.BP_ApplyGameplayEffectToSelf(*AbilitySystemComponent, FindObject<UObject*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/GameplayEffects/GE_Kiwi_PrisonTeleport_Complete.GE_Kiwi_PrisonTeleport_Complete_C")));
+					/*
 					UFunctions::LoadAndStreamInLevel(KIWI_PRISONJUNCTION, FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator {});
 					UFunctions::LoadAndStreamInLevel(KIWI_TUBES, FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator {});
 					UFunctions::LoadAndStreamInLevel(KIWI_OBSERVATIONHALLWAY, FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator{});
@@ -518,6 +530,7 @@ inline void* ProcessEventDetour(UObject* pObj, UObject* pFunc, void* pParams)
 					UFunctions::LoadAndStreamInLevel(KIWI_KEVINROOM, FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator {});
 					UFunctions::LoadAndStreamInLevel(KIWI_SPACE, FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator {});
 					UFunctions::Play(KIWI_EVENT_PLAYER);
+					*/
 				}
 				else if (gVersion == 18.40f)
 				{

@@ -152,6 +152,54 @@ public:
 		printf("\nSkydiving!, Redeploying at %fm.\n", height);
 	}
 
+	void ServerChoosePart(TEnumAsByte<EFortCustomPartType> Part, UObject* ChosenCharacterPart)
+	{
+		static auto fn = FindObject<UFunction*>(XOR(L"Function /Script/FortniteGame.FortPlayerPawn.ServerChoosePart"));
+
+		struct
+		{
+			TEnumAsByte<EFortCustomPartType> Part;
+			UObject* ChosenCharacterPart;
+		} params;
+		params.Part = Part;
+		params.ChosenCharacterPart = ChosenCharacterPart;
+
+		ProcessEvent(this->Pawn, fn, &params);
+	}
+
+	void GiveKiwiBackpack()
+	{
+		TEnumAsByte<EFortCustomPartType> Part;
+		Part = EFortCustomPartType::Backpack;
+
+		auto Backpack = FindObject<UObject*>(XOR(L"CustomCharacterPart /Kiwi/Gameplay/Blueprints/Backpack/CP_Backpack_Kiwi.CP_Backpack_Kiwi"));
+
+		ServerChoosePart(Part, Backpack);
+	}
+
+	UObject* AddComponentToController(UObject* BlueprintGeneratedClass)
+	{
+		static auto fn = FindObject<UFunction*>(XOR(L"Function /Script/Engine.Actor.AddComponentByClass"));
+
+		struct
+		{
+			UObject* Class;
+			bool bManualAttachment;
+			FTransform RelativeTransform;
+			bool bDeferredFinish;
+			UObject* ReturnValue;
+		} params;
+		params.Class = BlueprintGeneratedClass;
+		params.bManualAttachment = false;
+		params.RelativeTransform = FTransform{};
+		params.bDeferredFinish = false;
+
+		UpdatePlayerController();
+		ProcessEvent(this->Controller, fn, &params);
+
+		return params.ReturnValue;
+	}
+
 	auto IsJumpProvidingForce()
 	{
 		auto fn = FindObject<UFunction*>(XOR(L"Function /Script/Engine.Character:IsJumpProvidingForce"));
@@ -648,6 +696,15 @@ public:
 		PlayerControllerBools->bInfiniteMagazine = true;
 
 		printf(XOR("\n[NeoRoyale] You should have infinite ammo now!\n"));
+	}
+
+	static void SetLoadedApolloTerrain(bool bLoaded)
+	{
+		auto obj = FindObject<UObject*>(XOR(L"Kiwi_EventScript_C /Kiwi/Levels/Kiwi_P.Kiwi_P.PersistentLevel.Kiwi_EventScript_2"));
+
+		auto fn = FindObject<UFunction*>(XOR(L"Function /Kiwi/Gameplay/Kiwi_EventScript.Kiwi_EventScript_C.SetLoadedApolloTerrain"));
+
+		ProcessEvent(obj, fn, &bLoaded);
 	}
 
 	auto ExecuteConsoleCommand(const wchar_t* command)

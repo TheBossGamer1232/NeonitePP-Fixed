@@ -44,6 +44,51 @@ namespace NeoRoyale
 		gNeoniteLogoTexture = nullptr;
 	}
 
+	DWORD WINAPI StartKiwiThread(LPVOID) // Skyfire Event
+	{
+		bool bSkyfireLoaded = false;
+		bool bSkyfireEnding = false;
+
+		if (!bSkyfireLoaded)
+		{
+			UFunctions::LoadLevelInstance(L"/Kiwi/Levels/Kiwi_P.Kiwi_P", FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator{});
+			UFunctions::LoadLevelInstance(L"/Kiwi/Levels/Kiwi_Hangar.Kiwi_Hangar", FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator{});
+			UFunctions::LoadLevelInstance(L"/Kiwi/Levels/Kiwi_KevinRoom.Kiwi_KevinRoom", FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator{});
+			UFunctions::LoadLevelInstance(L"/Kiwi/Levels/Kiwi_ObservationHallway.Kiwi_ObservationHallway", FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator{});
+			UFunctions::LoadLevelInstance(L"/Kiwi/Levels/Kiwi_PrisonJunction.Kiwi_PrisonJunction", FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator{});
+			UFunctions::LoadLevelInstance(L"/Kiwi/Levels/Kiwi_Space.Kiwi_Space", FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator{});
+			UFunctions::LoadLevelInstance(L"/Kiwi/Levels/Kiwi_Tubes.Kiwi_Tubes", FVector{ 50009.137f, 49958.379f, 100026.398f }, FRotator{});
+			bSkyfireLoaded = true;
+
+			if (bSkyfireLoaded)
+			{
+				Sleep(5000);
+				NeoPlayer.TeleportTo(FVector{ 34640.0f, 32350.0f, 100600.0f }, FRotator{ 0.0f, 270.0f, 0.0f });
+				UFunctions::Play(L"LevelSequencePlayer /Kiwi/Levels/Kiwi_P.Kiwi_P.PersistentLevel.Kiwi_Master.AnimationPlayer");
+				UFunctions::DestroyAllTODM();
+				NeoPlayer.Summon(L"TODM_BR_Kiwi_Interior_C");
+				NeoPlayer.SetLoadedApolloTerrain(false);
+				Sleep(450000);
+				UFunctions::UnloadStreamLevel(L"Kiwi_ObservationHallway");
+				UFunctions::UnloadStreamLevel(L"Kiwi_PrisonJunction");
+				UFunctions::UnloadStreamLevel(L"Kiwi_Space");
+				UFunctions::UnloadStreamLevel(L"Kiwi_Tubes");
+				UFunctions::UnloadStreamLevel(L"Kiwi_Lobby");
+				Sleep(160000);
+				bSkyfireEnding = true;
+				UFunctions::UnloadStreamLevel(L"Kiwi_Hangar");
+				UFunctions::UnloadStreamLevel(L"Kiwi_KevinRoom");
+				NeoPlayer.SetLoadedApolloTerrain(true);
+				NeoPlayer.TeleportTo(FVector{ -157521.352f, 24902.775f, 99510.869f }, FRotator{ -5.0f, -27.0f, 0.0f });
+				NeoPlayer.StartSkydiving(0.0f);
+				NeoPlayer.TeleportTo(FVector{ -157521.352f, 24902.775f, 99510.869f }, FRotator{ -5.0f, -27.0f, 0.0f });
+				Sleep(2000);
+				NeoPlayer.TeleportTo(FVector{ -157521.352f, 24902.775f, 99510.869f }, FRotator{ -5.0f, -27.0f, 0.0f });
+			}
+		}
+		return 0;
+	}
+
 	inline void LoadMoreClasses()
 	{
 		const auto BPGClass = FindObject<UClass*>(XOR(L"Class /Script/Engine.BlueprintGeneratedClass"));

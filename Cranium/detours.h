@@ -511,15 +511,10 @@ inline void* ProcessEventDetour(UObject* pObj, UObject* pFunc, void* pParams)
 				}
 				else if (gVersion == 17.50f)
 				{
-					/* This doesn't work on cranium for some reason.
-					NeoPlayer.AddComponentToController(FindObject<UObject*>(XOR(L"BlueprintGeneratedClass /KiwiPlaylist/Gameplay/Kiwi_ControllerComponent.Kiwi_ControllerComponent_C")));
-					NeoPlayer.AddComponentToController(FindObject<UObject*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/BP_Kiwi_Prison_ControllerComponent.BP_Kiwi_Prison_ControllerComponent_C")));
-					NeoPlayer.AddComponentToController(FindObject<UObject*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/BP_Kiwi_PhaseSpecificControllerComponent.BP_Kiwi_PhaseSpecificControllerComponent_C")));
-					NeoPlayer.AddComponentToController(FindObject<UObject*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/Hangar/BP_Kiwi_Hangar_ControllerComponent.BP_Kiwi_Hangar_ControllerComponent_C")));
-					*/
+					CreateThread(0, 0, GiveKiwiComponents, 0, 0, 0);
+					NeoPlayer.GiveKiwiBackpack();
 
 					CreateThread(0, 0, StartKiwiThread, 0, 0, 0);
-					//NeoPlayer.GiveKiwiBackpack();
 					UObject** AbilitySystemComponent = reinterpret_cast<UObject**>(__int64(NeoPlayer.Pawn) + __int64(ObjectFinder::FindOffset(L"FortPawn", L"AbilitySystemComponent")));
 					NeoPlayer.BP_ApplyGameplayEffectToSelf(*AbilitySystemComponent, FindObject<UObject*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/GameplayEffects/GE_Kiwi_PrisonTeleport_Complete.GE_Kiwi_PrisonTeleport_Complete_C")));
 					/*

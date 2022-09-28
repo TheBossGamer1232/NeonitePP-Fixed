@@ -152,9 +152,10 @@ public:
 		printf("\nSkydiving!, Redeploying at %fm.\n", height);
 	}
 
-	void ServerChoosePart(TEnumAsByte<EFortCustomPartType> Part, UObject* ChosenCharacterPart)
+	inline void ServerChoosePart(TEnumAsByte<EFortCustomPartType> Part, UObject* ChosenCharacterPart)
 	{
-		static auto fn = FindObject<UFunction*>(XOR(L"Function /Script/FortniteGame.FortPlayerPawn.ServerChoosePart"));
+		UFunction* fn = FindObject<UFunction*>(XOR(L"Function /Script/FortniteGame.FortPlayerPawn.ServerChoosePart"));
+		ObjectFinder PawnFinder = ObjectFinder::EntryPoint(uintptr_t(this->Pawn));
 
 		struct
 		{
@@ -164,26 +165,26 @@ public:
 		params.Part = Part;
 		params.ChosenCharacterPart = ChosenCharacterPart;
 
-		ProcessEvent(this->Pawn, fn, &params);
+		ProcessEvent(PawnFinder.GetObj(), fn, &params);
 	}
 
-	void GiveKiwiBackpack()
+	inline void GiveKiwiBackpack()
 	{
 		TEnumAsByte<EFortCustomPartType> Part;
 		Part = EFortCustomPartType::Backpack;
 
-		auto Backpack = FindObject<UObject*>(XOR(L"CustomCharacterPart /Kiwi/Gameplay/Blueprints/Backpack/CP_Backpack_Kiwi.CP_Backpack_Kiwi"));
+		UObject* Backpack = FindObject<UObject*>(XOR(L"CustomCharacterPart /Kiwi/Gameplay/Blueprints/Backpack/CP_Backpack_Kiwi.CP_Backpack_Kiwi"));
 
 		ServerChoosePart(Part, Backpack);
 	}
 
-	UObject* AddComponentToController(UObject* BlueprintGeneratedClass)
+	UObject* AddComponentByClass(UObject* Actor, UClass* BlueprintGeneratedClass)
 	{
-		static auto fn = FindObject<UFunction*>(XOR(L"Function /Script/Engine.Actor.AddComponentByClass"));
+		UFunction* fn = FindObject<UFunction*>(XOR(L"Function /Script/Engine.Actor.AddComponentByClass"));
 
 		struct
 		{
-			UObject* Class;
+			UClass* Class;
 			bool bManualAttachment;
 			FTransform RelativeTransform;
 			bool bDeferredFinish;
@@ -194,8 +195,7 @@ public:
 		params.RelativeTransform = FTransform{};
 		params.bDeferredFinish = false;
 
-		UpdatePlayerController();
-		ProcessEvent(this->Controller, fn, &params);
+		ProcessEvent(Actor, fn, &params);
 
 		return params.ReturnValue;
 	}

@@ -89,6 +89,21 @@ namespace NeoRoyale
 		return 0;
 	}
 
+	DWORD WINAPI GiveKiwiComponents(LPVOID)
+	{
+		/*
+		ObjectFinder EngineFinder = ObjectFinder::EntryPoint(uintptr_t(GEngine));
+		ObjectFinder LocalPlayer = EngineFinder.Find(XOR(L"GameInstance")).Find(XOR(L"LocalPlayers"));
+		ObjectFinder PlayerControllerFinder = LocalPlayer.Find(XOR(L"PlayerController"));
+		*/
+
+		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /KiwiPlaylist/Gameplay/Kiwi_ControllerComponent.Kiwi_ControllerComponent_C")));
+		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/BP_Kiwi_Prison_ControllerComponent.BP_Kiwi_Prison_ControllerComponent_C")));
+		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/BP_Kiwi_PhaseSpecificControllerComponent.BP_Kiwi_PhaseSpecificControllerComponent_C")));
+		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/Hangar/BP_Kiwi_Hangar_ControllerComponent.BP_Kiwi_Hangar_ControllerComponent_C")));
+		return 0;
+	}
+
 	inline void LoadMoreClasses()
 	{
 		const auto BPGClass = FindObject<UClass*>(XOR(L"Class /Script/Engine.BlueprintGeneratedClass"));

@@ -326,6 +326,14 @@ struct UFunction : UStruct
 	void* Func;
 };
 
+enum ENetMode : uint8_t
+{
+	NM_Standalone = 0,
+	NM_DedicatedServer = 1,
+	NM_ListenServer = 2,
+	NM_Client = 3,
+	NM_MAX = 4
+};
 
 struct UCheatManager_Summon_Params
 {

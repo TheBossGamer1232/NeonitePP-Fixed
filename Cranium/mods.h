@@ -85,6 +85,11 @@ namespace UFunctions
 		ProcessEvent(KismetLib, fn, &params);
 	}
 
+	__int64 InternalGetNetModeDetour(__int64 World)
+	{
+		return ENetMode::NM_Standalone;
+	}
+
 	inline void TeleportToSpawn()
 	{
 		ObjectFinder EngineFinder = ObjectFinder::EntryPoint(uintptr_t(GEngine));

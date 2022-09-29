@@ -150,6 +150,12 @@ namespace Hooks
 		ProcessEvent = decltype(ProcessEvent)(ProcessEventAdd);
 		gProcessEventAdd = ProcessEventAdd;
 
+		// Tested 17.50 and 18.40
+		auto InternalGetNetModeAdd = Util::FindPatternEasy("48 83 EC 28 48 83 79 ? ? 75 20 48 8B 91 ? ? ? ? 48 85 D2 74 1E 48 8B 02 48 8B CA FF 90 ? ? ? ? 84 C0 0F 85 ? ? ? ?");
+
+		MH_CreateHook((LPVOID)(InternalGetNetModeAdd), UFunctions::InternalGetNetModeDetour, (void**)(&InternalGetNetMode));
+		MH_EnableHook((LPVOID)(InternalGetNetModeAdd));
+
 		//Used for Camera Hooking.
 		//Tested from 12.41 to 15.40
 		if (gVersion <= 16.00f)

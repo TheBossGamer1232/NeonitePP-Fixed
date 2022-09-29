@@ -1,5 +1,5 @@
 #pragma once
-
+static __int64 (*InternalGetNetMode)(__int64 a1);
 inline void* (*ProcessEvent)(void*, void*, void*);
 inline int (*GetViewPoint)(void*, FMinimalViewInfo*, BYTE);
 inline FString (*GetObjectNameInternal)(PVOID);

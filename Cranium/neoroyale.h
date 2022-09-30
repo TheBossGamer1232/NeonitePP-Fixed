@@ -97,10 +97,16 @@ namespace NeoRoyale
 		ObjectFinder PlayerControllerFinder = LocalPlayer.Find(XOR(L"PlayerController"));
 		*/
 
-		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /KiwiPlaylist/Gameplay/Kiwi_ControllerComponent.Kiwi_ControllerComponent_C")));
-		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/BP_Kiwi_Prison_ControllerComponent.BP_Kiwi_Prison_ControllerComponent_C")));
-		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/BP_Kiwi_PhaseSpecificControllerComponent.BP_Kiwi_PhaseSpecificControllerComponent_C")));
-		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/Hangar/BP_Kiwi_Hangar_ControllerComponent.BP_Kiwi_Hangar_ControllerComponent_C")));
+		UClass* KiwiControllerComponent = FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /KiwiPlaylist/Gameplay/Kiwi_ControllerComponent.Kiwi_ControllerComponent_C"));
+		UClass* KiwiPrisonControllerComponent = FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/BP_Kiwi_Prison_ControllerComponent.BP_Kiwi_Prison_ControllerComponent_C"));
+		UClass* KiwiPhaseControllerComponent = FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/BP_Kiwi_PhaseSpecificControllerComponent.BP_Kiwi_PhaseSpecificControllerComponent_C"));
+		UClass* KiwiHangarControllerComponent = FindObject<UClass*>(XOR(L"BlueprintGeneratedClass /Kiwi/Gameplay/Blueprints/Hangar/BP_Kiwi_Hangar_ControllerComponent.BP_Kiwi_Hangar_ControllerComponent_C"));
+
+		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, KiwiControllerComponent);
+		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, KiwiPrisonControllerComponent);
+		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, KiwiPhaseControllerComponent);
+		NeoPlayer.AddComponentByClass(NeoPlayer.Controller, KiwiHangarControllerComponent);
+
 		return 0;
 	}
 
